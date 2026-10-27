@@ -1,0 +1,50 @@
+# Copy to config/local.yaml and run with ALPHA_CONFIG=config/local.yaml (or --config).
+# Every value here is a default; delete what you don't change.
+db_url: sqlite:///data/alpha.db        # or postgresql+psycopg://alpha:alpha@localhost:5432/alpha
+host: 127.0.0.1                        # loopback only (enforced)
+port: 8800
+history_window_s: 7200                 # feature look-back
+snapshot_retention_days: 30            # raw snapshots kept for Phase 2 backtests
+
+sources:
+  chains: ["CT_501", "56"]             # CT_501 = Solana (Pump.fun etc.), 56 = BSC, 8453 = Base
+  poll_interval_s: 60
+  meme_rush_rank_types: [10, 20, 30]   # new, finalizing, migrated
+  meme_rush_limit: 100
+  dexscreener_enrich_top_n: 60
+  audit_top_n: 25                      # security audits per cycle (most promising first)
+  spot_heatmap_top_n: 60
+
+weights:                               # relative; normalised at runtime
+  momentum: 15
+  volume_acceleration: 15
+  unique_buyers: 15
+  holder_growth: 10
+  smart_money: 15
+  liquidity: 10
+  attention: 10
+  upside: 10
+
+thresholds:
+  min_liquidity_usd: 5000
+  min_liq_to_mcap: 0.03
+  max_top10_pct: 45
+  max_dev_pct: 10
+  max_sniper_pct: 15
+  max_insider_pct: 15
+  max_bundler_pct: 15
+  max_new_wallet_pct: 35
+  warn_tax_pct: 5
+  max_tax_pct: 10
+  max_trades_per_trader_5m: 8
+  max_volume_per_holder_usd: 2000
+  stale_after_s: 300
+  audit_ttl_s: 1800
+
+alerts:
+  min_score: 65        # rank score
+  max_risk: 45
+  min_confidence: 0.5
+  cooldown_s: 1800
+  rescore_jump: 15
+  # telegram_bot_token / telegram_chat_id: set via TG_BOT_TOKEN / TG_CHAT_ID env, not in this file

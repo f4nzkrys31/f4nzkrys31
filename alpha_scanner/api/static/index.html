@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alpha Scanner</title>
+<meta name="alpha-token" content="__ALPHA_TOKEN__">
+<meta name="alpha-demo" content="__DEMO__">
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header>
+  <div class="brand">Alpha Scanner <span class="phase">Phase 1 · read-only · no trading</span></div>
+  <div id="demo-banner" class="demo hidden">DEMO MODE — synthetic data, not real tokens</div>
+  <div id="health-pill" class="pill">…</div>
+</header>
+<nav>
+  <button data-tab="candidates" class="active">Candidates</button>
+  <button data-tab="feed">New tokens</button>
+  <button data-tab="heatmap">Heatmap</button>
+  <button data-tab="alerts">Alerts</button>
+  <button data-tab="watchlist">Watchlist</button>
+  <button data-tab="health">Health</button>
+</nav>
+<main>
+  <section id="tab-candidates" class="tab">
+    <form id="filters" class="filters">
+      <label>Chain <select name="chain"><option value="">all</option><option value="CT_501">Solana</option><option value="56">BSC</option><option value="8453">Base</option></select></label>
+      <label>Stage <select name="stage"><option value="">all</option><option>bonding</option><option>finalizing</option><option>migrated</option><option>dex</option></select></label>
+      <label>Min rank <input name="min_rank" type="number" value="0" min="0" max="100"></label>
+      <label>Max risk <input name="max_risk" type="number" value="100" min="0" max="100"></label>
+      <label>Min liquidity $ <input name="min_liquidity" type="number" value="0" min="0"></label>
+      <label>Max mcap $ <input name="max_mcap" type="number" min="0" placeholder="any"></label>
+      <label>Sort <select name="sort"><option value="rank_score">rank</option><option value="opportunity_score">opportunity</option><option value="risk_score">lowest risk</option><option value="confidence">confidence</option><option value="updated_at">updated</option></select></label>
+      <label class="check"><input name="include_blocked" type="checkbox"> show blocked</label>
+    </form>
+    <div class="table-wrap"><table id="cand-table"><thead><tr>
+      <th>Token</th><th>Platform</th><th>Stage</th><th>Rank</th><th>Opp.</th><th>Risk</th><th>Conf.</th><th>Security</th>
+      <th>MCap</th><th>Liq.</th><th>Vol 24h</th><th>Holders</th><th>Vol accel</th><th>Buy ratio</th><th>Age</th><th>Flags</th>
+    </tr></thead><tbody></tbody></table></div>
+    <p class="note">Scores are heuristics (0–100), not probabilities of profit. "UNVERIFIED" security means no usable audit — not safe.</p>
+  </section>
+  <section id="tab-feed" class="tab hidden">
+    <div class="table-wrap"><table id="feed-table"><thead><tr><th>First seen</th><th>Token</th><th>Platform</th><th>Rank</th><th>Risk</th><th>Liq.</th><th>Holders</th></tr></thead><tbody></tbody></table></div>
+  </section>
+  <section id="tab-heatmap" class="tab hidden">
+    <h2>Launchpad opportunity map <small>(rows: platform, columns: token age; colour: mean rank of unblocked tokens)</small></h2>
+    <div id="heat-launch" class="heat"></div>
+    <h2>Narratives <small>(1h net inflow)</small></h2>
+    <div id="heat-narr" class="tiles"></div>
+    <h2>Binance spot USDT pairs <small>(24h change, size ~ volume)</small></h2>
+    <div id="heat-spot" class="tiles"></div>
+  </section>
+  <section id="tab-alerts" class="tab hidden"><div id="alerts-list"></div></section>
+  <section id="tab-watchlist" class="tab hidden">
+    <div class="table-wrap"><table id="watch-table"><thead><tr><th>Token</th><th>Note</th><th>Rank</th><th>Risk</th><th>Added</th><th></th></tr></thead><tbody></tbody></table></div>
+  </section>
+  <section id="tab-health" class="tab hidden"><pre id="health-json"></pre></section>
+</main>
+<aside id="detail" class="hidden">
+  <button id="detail-close" aria-label="close">×</button>
+  <div id="detail-body"></div>
+</aside>
+<footer>Information tool only. Not investment advice. Early-stage tokens can go to zero. No orders are placed by this system.</footer>
+<script src="/static/app.js"></script>
+</body>
+</html>

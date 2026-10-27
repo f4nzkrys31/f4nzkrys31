@@ -1,0 +1,24 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: alpha
+      POSTGRES_PASSWORD: alpha   # local only; change if the host is shared
+      POSTGRES_DB: alpha
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alpha"]
+      interval: 5s
+      retries: 10
+  scanner:
+    build: .
+    depends_on:
+      db: { condition: service_healthy }
+    environment:
+      ALPHA_DB_URL: postgresql+psycopg://alpha:alpha@db:5432/alpha
+      TG_BOT_TOKEN: ${TG_BOT_TOKEN:-}
+      TG_CHAT_ID: ${TG_CHAT_ID:-}
+    ports: ["127.0.0.1:8800:8800"]   # never expose publicly
+    restart: unless-stopped
+volumes:
+  pgdata:
